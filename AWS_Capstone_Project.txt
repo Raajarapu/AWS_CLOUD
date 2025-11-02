@@ -1,0 +1,774 @@
+Build an AWS Multi-Tier Architecture
+SPL-CX-200-ARCHIT-7 - Version 1.0.0
+
+© 2025 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.
+
+Note: Do not include any personal, identifying, or confidential information into the lab environment. Information entered may be visible to others.
+
+Corrections, feedback, or other questions? Contact us at AWS Training and Certification.
+
+Lab overview
+You are tasked with applying your new knowledge to solve several architectural challenges within a specific business case. First, you are given a list of requirements related to the design. Then, you perform a series of actions to deploy and configure the services needed to meet the requirements.
+
+During this capstone lab, you have access to the following:
+
+AWS CloudFormation templates and other lab files
+Task scenarios, descriptions, and requirements
+Optional step-by-step instructions, if needed
+The task scenarios provide relevant background and help you understand how the requirements solve a real-world business problem. Use the templates and the requirements list to complete all of the tasks in the capstone. Now that you are familiar with concepts and services, this lab solidifies your knowledge through practice. In the real world, you encounter problems that are not well-defined or sequenced logically. By the end of this capstone, you should have a better understanding of how you can apply architectural best practices to real-world problems.
+
+Objectives
+After completing this lab, you should be able to do the following:
+
+Deploy a virtual network spread across multiple Availability Zones in a Region using a CloudFormation template.
+Deploy a highly available and fully managed relational database across those Availability Zones (AZ) using Amazon Relational Database Service (Amazon RDS).
+Use Amazon Elastic File System (Amazon EFS) to provision a shared storage layer across multiple Availability Zones for the application tier, powered by Network File System (NFS).
+Create a group of web servers that automatically scales in response to load variations to complete your application tier.
+Icon key
+Various icons are used throughout this lab to call attention to different types of instructions and notes. The following list explains the purpose for each icon:
+
+ Expected output: A sample output that you can use to verify the output of a command or edited file.
+ Learn more: Where to find more information.
+ Note: A hint, tip, or important guidance.
+ Task complete: A conclusion or summary point in the lab.
+ Warning: An action that is irreversible and could potentially impact the failure of a command or process (including warnings about configurations that cannot be changed after they are made).
+Start lab
+To launch the lab, at the top of the page, choose Start Lab.
+
+ Caution: You must wait for the provisioned AWS services to be ready before you can continue.
+
+To open the lab, choose Open Console .
+
+You are automatically signed in to the AWS Management Console in a new web browser tab.
+
+ Warning: Do not change the Region unless instructed.
+
+Common sign-in errors
+Error: You must first sign out
+Log out error
+
+If you see the message, You must first log out before logging into a different AWS account:
+
+Choose the click here link.
+Close your Amazon Web Services Sign In web browser tab and return to your initial lab page.
+Choose Open Console again.
+Error: Choosing Start Lab has no effect
+In some cases, certain pop-up or script blocker web browser extensions might prevent the Start Lab button from working as intended. If you experience an issue starting the lab:
+
+Add the lab domain name to your pop-up or script blocker’s allow list or turn it off.
+Refresh the page and try again.
+Lab scenario
+Example Corp. creates marketing campaigns for small-sized to medium-sized businesses. They recently hired you to work with the engineering teams to build out a proof of concept for their business. To date, they have hosted their client-facing application in an on-premises data center, but they recently decided to move their operations to the cloud in an effort to save money and transform their business with a cloud-first approach. Some members of their team have cloud experience and recommended the AWS Cloud services to build their solution.
+
+In addition, they decided to redesign their web portal. Customers use the portal to access their accounts, create marketing plans, and run data analysis on their marketing campaigns. They would like to have a working prototype in two weeks. You must design an architecture to support this application. Your solution must be fast, durable, scalable, and more cost-effective than their existing on-premises infrastructure.
+
+The following image shows the final architecture of the designed solution:
+
+Architecture diagram.
+
+Image description: Preceding image depicts the entire architecture which will be created by the end of this lab. We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways. In-order to facilitate high-availability (HA) for our architecture we have Application Load Balancer (ALB) and Auto-Scaling Group (ASG). There is also a fully scalable and elastic file server using Amazon EFS which can work across multiple availability zones (AZ)s. For database we are using Amazon Aurora which works across multiple availability zones (AZ)s with primary in one availability zone (AZ) and a read-replica in another availability zone (AZ).
+
+AWS services not used in this lab
+AWS services not used in this lab are deactivated in the lab environment. In addition, the capabilities of the services used in this lab are limited to only what the lab requires. Expect errors when accessing other services or performing actions beyond those provided in this lab guide.
+
+ Note: This lab includes two sets of instructions.
+
+Section 1: High-level instructions provide students with a limited set of high-level instructions, a list of requirements and configurations, and hints.
+Section 2: Detailed instructions provide students with step-by-step instructions for each task.
+Students are strongly encouraged to attempt the lab only using the high-level instructions.
+
+
+Section 1: High-level instructions
+In this section, all of the tasks list the requirements and configurations that are required to build the solution. Try building the solution using this section only. You can always refer to Section 2 for detailed instructions when you experience challenges.
+
+Task 1: Review and run a pre-configured CloudFormation template
+In this task, you design and deploy a highly available and scalable deployment of the WordPress application stack. You use a CloudFormation template to deploy the networking resources required to support the application.
+
+Task 1: Scenario
+The company wants to deploy a new web application on WordPress on their existing web hosting account. The first step is to gather the requirements for the architecture design. To help you get started, the network team gave you a list of requirements to ensure there are no issues with the existing landscape. This includes the Classless Inter-Domain Routing (CIDR) range for the Amazon Virtual Private Cloud (Amazon VPC). Using this address range, build a VPC with two public subnets, two private application subnets, and two private database subnets. Make sure you attach an internet gateway to the VPC with a NAT gateway for routing traffic. They also requested two Elastic IP addresses. Ensure that you associate the following:
+
+The public subnet with the internet gateway
+The private application subnet and private database subnet with the NAT gateway
+The network team also provided the route tables needed with their subnet associations.
+
+Your cloud engineer has transferred the information request to a CloudFormation template and set up the security groups and outputs needed for future deployments. Please review the CloudFormation template and the resources created with your cloud engineer, and check back with the network team to validate that the build meets all of their requirements.
+
+Task-1-Architecture.
+
+Image description: We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways.
+
+Task 1: Sub-tasks
+Review the template file to understand the infrastructure being deployed.
+Review the stack creation events
+View created resources from the console.
+Task 1: Requirements and configuration
+In CloudFront, review the Task1StackPublic stack.
+Examine the template, events, and outputs.
+Task 1: Proceed to the AWS Management Console
+Now that you have your first task requirements, go ahead and build. Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You learned to configure the stack and created all of the resources using the provided CloudFormation template.
+
+Task 2: Create an Amazon RDS database
+In this task, you create an Amazon Aurora DB instance.
+
+Task 2: Scenario
+The network team verified the previous deployment requirements and everything looks good. The next phase of the project is to establish a secure backend database to give the database administrator (DBA) access for any migration operations before go-live.
+
+The current database requires a lot of administrative overhead and the business has agreed to move to a managed database service. They want their architecture to be highly available, so you recommend that they set up a Multi-AZ RDS Aurora database layer. After reviewing the proposed design, the DBA has outlined the database requirements. Because of previous performance issues, the database does not require encryption, and you agree that this is the best choice.
+
+The existing monitoring solution polls data every 10 minutes. The engineering team doesn’t have room in the budget for additional features; therefore, enhanced monitoring is not required.
+
+Task-2-Architecture.
+
+Image description: We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways. For database we are using Amazon Aurora which works across multiple availability zones (AZ)s with primary in one availability zone (AZ) and a read-replica in another availability zone (AZ).
+
+Task 2: Sub-tasks
+Create a new Aurora database.
+Copy the database metadata.
+Task 2: Requirements and Configuration
+Amazon Aurora database
+Credentials should be self managed.
+For the Master username, leave the default value as admin.
+For the Master password, use the LabPassword from the left of these instructions.
+The database instances need to be Amazon Aurora with MySql compatible and burstable-performance DB instance.
+The database instance size needs to be db.t3.medium.
+The database layer needs to be deployed into the LabVPC.
+The subnet group needs to be configured with the Database subnets only.
+The database should not be publicly accessible.
+The database needs to be configured with the RDS Security Group set up by your security team only.
+Set Initial database name as WPDatabase.
+Set DB cluster identifier as MyDBCluster.
+Turn off Encryption.
+Turn off Enhanced monitoring.
+Turn off Enable auto minor version upgrade.
+Turn off Enable deletion protection.
+ Note: Take note of the following because you need them later:
+
+Master username and Master password
+Initial database name
+Writer endpoint
+Task 2: Proceed to the AWS Management Console
+Now that you have the requirements, go ahead and build. Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You have created the Amazon Aurora database.
+
+Task 3: Create an Amazon EFS file system
+In this task, you create and configure a custom Amazon EFS file system.
+
+Task 3: Scenario
+Example Corp. is having issues with the lead time on ordering new hardware. This is slowing down their ability to onboard new customers and expand the business. The SysOps team has a request for a storage solution built for the cloud. They need to be able to confirm that the backup policies and encryption settings meet their internal and regulatory compliance requirements. Managing time, cost, and compliance gives Example Corp. a competitive advantage.
+
+You recommend Amazon EFS to the business as a simple, serverless, set-and-forget, elastic file system. With Amazon EFS, they can share data securely, without provisioning or managing storage.
+
+Your task is to create an Amazon EFS file system that meets the SysOps team’s requirements.
+
+Task-3-Architecture.
+
+Image description: We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways. There is also a fully scalable and elastic file server using Amazon EFS which can work across multiple availability zones (AZ)s. For database we are using Amazon Aurora which works across multiple availability zones (AZ)s with primary in one availability zone (AZ) and a read-replica in another availability zone (AZ).
+
+Task 3: Sub-tasks
+Create a new EFS file system.
+Copy the EFS file system metadata.
+Task 3: Requirements and Configuration
+Customize the creation of an Amazon EFS file system:
+
+It should be named myWPEFS
+It must have Regional availability and durability.
+It needs to be General Purpose performance to control costs.
+It needs to have Bursting throughput to scale the system size.
+Turn off Automatic backups and Encryption of data at rest.
+Tag the file system with key-value : Name-myWPEFS.
+EFS needs to be deployed in LabVPC.
+Select Availability Zone ending in “a” and Availability Zone ending in “b”.
+Assign AppSubnet1 and AppSubnet2 as subnet IDs.
+Remove the default security group and select EFSMountTargetSecurityGroup.
+It does not need a file system policy created at this time.
+ Note: Take note of the File system ID. You need it later.
+
+Task 3: Proceed to the AWS Management Console
+Now that you have the requirements, go ahead and build. Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You have created the Amazon EFS file system.
+
+Task 4: Create an Application Load Balancer
+In this task, you create the Application Load Balancer and a target group.
+
+Task 4: Scenario
+The SysOps team is excited about the new Amazon EFS configuration and eager to address their next pain point. The current application experiences frequent outages because of variable, unexpected traffic loads. The SysOps team wants to know if AWS has a service to address this issue that can be used at the application layer (Layer 7). On further investigation, you recognize the need for an Application Load Balancer for the application servers in the private subnet. Your task is to deploy and configure an Application Load Balancer with a health check, and register the required targets.
+
+Task-4-Architecture.
+
+Image description: We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways. In-order to facilitate high-availability (HA) for our architecture we have Application Load Balancer (ALB) and Auto-Scaling Group (ASG). There is also a fully scalable and elastic file server using Amazon EFS which can work across multiple availability zones (AZ)s. For database we are using Amazon Aurora which works across multiple availability zones (AZ)s with primary in one availability zone (AZ) and a read-replica in another availability zone (AZ).
+
+Task 4: Sub-tasks
+Create an Application Load Balancer.
+Copy the Application Load Balancer metadata.
+Task 4: Requirements and Configuration
+The Application Load Balancer Target group should be configured to use the LabVPC for load balancing instances with the following properties:
+
+Target group name: myWPTargetGroup
+Health check path: /wp-login.php
+Advanced health check settings:
+Healthy threshold: 2
+Unhealthy threshold: 10
+Timeout: 50
+Interval: 60
+Leave all other settings at their default values.
+The Application Load Balancer needs to be configured in the LabVPC and in the public subnets with the following properties:
+
+Load balancer name: myWPAppALB
+Subnets: Select all Public subnets.
+SecurityGroups: Choose AppInstanceSecurityGroup.
+Listener: Forward to the created target group.
+ Note: Take note of the Application Load Balancer’s DNS name. You need it later.
+
+Task 4: Proceed to the AWS Management Console
+Now that you have the requirements, go ahead and build. Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You have created the target group and an Application Load Balancer.
+
+Task 5: Create a launch template using CloudFormation
+In this task, you use a CloudFormation template to deploy the WordPress user data within an Amazon Elastic Compute Cloud (Amazon EC2) Auto Scaling launch template. The template includes the Amazon EFS mount points and the Aurora configurations.
+
+Task 5: Scenario
+Up to this point, you created the underlying network resources, the database, an Amazon EFS file system, and an Application Load Balancer. It’s time to put it all together. Example Corp. already has a WordPress account, so the cloud engineer uses the settings and configuration from their existing environment to create a CloudFormation template. This includes all of the new resources you provisioned to set up a launch template.
+
+Review the CloudFormation template and create all of the necessary resources. Pay special attention to the user data script. Check for any errors in the deployment and address those, if needed. After that is completed, you can create the application servers to support traffic to the new environment.
+
+Task 5: Sub-tasks
+Obtain and review the CloudFormation template.
+Upload the template to create the CloudFormation stack.
+View created resources from the console.
+View the created launch template.
+Task 5: Requirements and Configuration
+Copy the Task5TemplateUrl value from the left side of these lab instructions and paste it into a new browser tab to view or download the template. Review it to see what resources it will create.
+
+Choose an existing template and select Amazon S3 URL.
+
+Copy the Task5TemplateUrl value from the left side of these lab instructions and paste it in the Amazon S3 URL text box.
+
+For Stack name please Enter WPLaunchConfigStack.
+
+Using the values saved from previous tasks, update the following Parameters values at the time of stack creation:
+
+DB Name: Paste the initial database name (from Task 2).  Note: Make sure that you paste the initial database name, not the cluster name.
+Database endpoint: Paste the Writer endpoint (from Task 2).
+Database User Name: Paste the Master username (from Task 2).
+Database Password: Paste the Master password (from Task 2).
+WordPress admin username: Defaults to wpadmin.
+WordPress admin password: Paste the LabPassword value from the left side of these lab instructions.
+WordPress admin email address: Input a valid email address.
+Instance Type: Defaults to t3.medium.
+ALBDnsName: Paste the DNS name value (from Task 4).
+LatestAL2023AmiId: Leave the default value.
+WPElasticFileSystemID: Paste the File system ID value (from Task 3).
+Task 5: Proceed to the AWS Management Console
+Now you have the requirements, go ahead and build the next phase of the project. Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You have created the stack using the provided CloudFormation template.
+
+Task 6: Create the application servers by configuring an Auto Scaling group and a scaling policy
+In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy.
+
+Task 6: Scenario
+Now that your template has been deployed, it’s time to create the application servers and auto scaling mechanism. In the previous task, you chose to implement auto scaling for the app servers to meet the scaling requirements of the project plan.
+
+Create an Auto Scaling group and scaling policy. Verify that the instance status is healthy, and test the load balancer availability. Hand the environment over to the engineering teams to validate full functionality when the unit test is complete, and ask them for feedback.
+
+When the team is satisfied, ask them to migrate the WordPress site to the AWS environment and test the app functionality. A common practice is to introduce examples of failure. If the app is working as intended, you would introduce some examples of failure, for example, delete an app server or roll back the database to a recent backup. This step is not a part of this lab.
+
+Task-6-Architecture.
+
+Image description: We have Amazon VPC to facilitate public and private networking using Public Subnets and Private Subnets. To ensure we are able to accept incoming internet traffic and allow outgoing traffic to the internet, we have Internet Gateway and NAT Gateways. In-order to facilitate high-availability (HA) for our architecture we have Application Load Balancer (ALB) and Auto-Scaling Group (ASG). There is also a fully scalable and elastic file server using Amazon EFS which can work across multiple availability zones (AZ)s. For database we are using Amazon Aurora which works across multiple availability zones (AZ)s with primary in one availability zone (AZ) and a read-replica in another availability zone (AZ).
+
+Task 6: Sub-tasks
+Create an Auto Scaling group.
+Verify the target groups and test the application server through the load balancer.
+Log in to WordPress and explore.
+Task 6: Requirements and Configuration
+Name the auto scaling group WP-ASG
+Use the Launch template from the previous task.
+Use the LabVPC for network settings.
+Use the App subnets in both Availability Zones.
+Use the existing load balancer and target group created earlier.
+Use the Elastic Load Balancing (ELB) health check and set the health check grace period to 300 seconds.
+Turn on Enable group metrics collection within CloudWatch.
+Configure the group size:
+Desired capacity: 2
+Minimum capacity: 2
+Maximum capacity: 4
+Configure Scaling policies with Target tracking scaling policy and use the defaults.
+Notifications are out of scope for the lab and do not need to be configured.
+Tag the auto scaling group with key-value : Name-wp-ha-app.
+Verify that the Auto Scaling group has launched your EC2 instances.
+Test the application using the Application Load Balancer DNS name.
+Task 6: Proceed to the AWS Management Console
+Now that you have the final task requirements, go ahead and build to complete your project! Instructions are available in Section 2 if you experience challenges, but it’s recommended you try to build first without them.
+
+ Task complete: You have created the AWS Auto Scaling group and successfully launched the WordPress application.
+
+
+Section 2: Detailed instructions
+In this section, all of the tasks list step-by-step instructions for reference if you experience challenges while building the solution on your own. Have you tried Section 1 to build the solution first?
+
+Task 1 instructions: Review the Network resources
+Task 1.1: Navigate to the CloudFormation console
+At the top of the AWS Management Console, in the search box, search for and choose CloudFormation.
+The CloudFormation page is displayed.
+
+Task 1.2: Review the CloudFormation template
+Choose the stack containing Task1StackPublic.
+
+Choose the Template tab.
+
+Review the CloudFormation template and predict what resources it created.
+
+Task 1.3: View created resources from the console
+Choose the Resources tab.
+ The list shows the resources that are being created. CloudFormation determines the optimal order for resources to be created, such as creating the VPC before the subnet.
+
+Review the resources that were deployed in the stack.
+
+Choose the Events tab and scroll through the list.
+
+ The list shows (in reverse order) the activities performed by CloudFormation, such as starting to create a resource and then completing the resource creation. Any errors encountered during the creation of the stack is listed in this tab.
+
+Choose the Outputs tab.
+
+Review the key value pairs in the Outputs section. These values may be useful in later lab tasks.
+
+ Task complete: You have learned to configure the stack and created all of the resources using the provided CloudFormation template.
+
+
+Task 2 instructions: Create an Amazon RDS database
+In this task, you deploy a highly available database for use by WordPress.
+
+Task 2.1: Navigate to the Amazon RDS console
+At the top of the page, in the unified search bar, search for and choose Aurora and RDS.
+The Amazon RDS console page is displayed.
+
+Task 2.2: Create a new Amazon Aurora database
+In the left navigation pane, choose Databases.
+
+Choose Create database.
+
+The Create database page is displayed.
+
+In the Choose a database creation method section, select Standard create.
+
+In the Engine options section, configure the following:
+
+For Engine type, select Aurora (MySQL Compatible).
+In the Templates section, select Production.
+
+In the Settings section, configure the following:
+
+For DB cluster identifier, enter MyDBCluster
+For Master username, leave the default option as admin
+For Credentials management, choose Self managed
+For Master password, paste the LabPassword value from the left side of these lab instructions.
+Confirm master password, paste the LabPassword value from the left side of these lab instructions.
+In the Instance configuration section:
+For DB instance class, select Burstable classes (includes t classes).
+For instance type, leave the default option as db.t3.medium.
+In the Availability & durability section, for Multi-AZ deployment, select Create an Aurora Replica or Reader node in a different AZ (recommended for scaled availability).
+
+In the Connectivity section:
+
+For Virtual private cloud (VPC), select LabVPC.
+
+For DB subnet group, select labdbsubnetgroup.
+
+For Public access, select No.
+
+For VPC security group (firewall), select Choose existing.
+
+For Existing VPC security groups:
+
+Remove the default security group, by choosing the X.
+Select xxxxx-RDSSecurityGroup-xxxxx from the drop-down.
+Expand the  Additional configuration section and configure the following:
+
+Database port: Leave the configuration at the default 3306 value.
+In the Monitoring section, clear (de-select) Enable Enhanced monitoring.
+
+Scroll to the bottom of the page and expand the main  Additional configuration section.
+
+In the Database options section:
+
+For Initial database name, enter WPDatabase
+In the Encryption section, deselect Enable encryption.
+
+In the Maintenance section, deselect Enable auto minor version upgrade.
+
+In the Maintenance section, deselect Enable deletion protection.
+
+Scroll to the bottom of the screen and choose Create database.
+
+On the Suggested add-ons for mydbcluster pop-up window, choose Close
+
+ Note: Your Aurora MySQL DB cluster is in the process of launching. The cluster you configured consists of two instances, each in a different Availability Zone. The Amazon Aurora DB cluster can take up to 5 minutes to launch. Wait for the mydbcluster status to change to Available. You do not have to wait for the availability of the instances to continue.
+
+ Expected service output:
+
+ Successfully created database mydbcluster
+
+
+Choose View connection details displayed on the success message border to save the connection details of your mydbcluster database to a text editor.
+
+On the Connection details to your database mydbcluster pop-up window, choose Close.
+
+Task 2.3: Copy database metadata
+In the left navigation pane, choose Databases.
+
+Choose the mydbcluster link.
+
+Choose the Connectivity & security tab.
+
+Copy the endpoint value for the Writer instance to a text editor.
+
+ Note: To copy the Writer instance endpoint, hover on it and choose the copy  icon.
+
+Choose the Configuration tab.
+
+Copy the Master username value to a text editor.
+
+For Master password, use the LabPassword value from the left side of these lab instructions.
+
+In the left navigation pane, choose Databases.
+
+Choose the mydbcluster-instance-x writer instance link.
+
+Choose the Configuration tab.
+
+Copy the DB name value to a text editor.
+
+ Additional information: WordPress uses its database to store articles, users, and configuration information.
+
+ Task complete: You have successfully created a highly available & fully managed relational database across those availability zones using Amazon RDS.
+
+
+Task 3 instructions: Creating an Amazon EFS file system
+In this task, you provision a shared storage layer using Amazon EFS that creates an NFS cluster across multiple availability zones.
+
+Task 3.1: Navigate to the EFS console
+At the top of the page, in the unified search bar, search for and choose EFS.
+The Amazon Elastic File System page is displayed.
+
+Task 3.2: Create a new file system
+Choose Create file system.
+
+On the Create file system page, choose Customize.
+
+On the File system settings page, in the General section:
+
+For Name - optional, enter myWPEFS
+Deselect Enable automatic backups.
+Expand the Tags - optional section:
+For Tag key, enter Name
+For Tag value - optional, enter myWPEFS
+Leave all other settings at their default value.
+Choose Next.
+
+On the Network access page:
+
+For Virtual Private Cloud (VPC), select LabVPC.
+In the Mount targets section:
+For Availability Zone, select the Availability Zone ending in “a”.
+For Subnet ID, select AppSubnet1.
+For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx
+To remove the default Security group, choose the X.
+For Availability Zone, select Availability Zone ending in “b”.
+For Subnet ID, select AppSubnet2.
+For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx.
+To remove the default Security group, choose the X.
+Choose Next.
+
+On the File system policy - optional page, choose Next.
+
+ Note: Configuring this page is not necessary in this lab.
+
+On the Review and create page, scroll to the bottom of the page and choose Create.
+ Expected service output:
+
+ Success! File system (fs-xxxxxxx) is available
+
+
+ Note: The file system state displays as Available after several minutes.
+
+Copy the File system ID generated for myWPEFS to a text editor. It has a format like fs-a1234567.
+ You have successfully created the Amazon EFS that created the NFS cluster across multiple availability zones.
+
+
+Task 4 instructions: Create an Application Load Balancer
+In this task, you create the Application Load Balancer and a target group.
+
+Task 4.1: Navigate to the Amazon EC2 console
+At the top of the page, in the unified search bar, search for and choose EC2.
+The EC2 Dashboard page is displayed.
+
+Task 4.2: Create a Target group
+In the left navigation pane, choose Target Groups.
+
+Choose Create target group.
+
+On the Specify group details page, in the Basic configuration section:
+
+For Choose a target type, select Instances.
+For Target group name, enter myWPTargetGroup
+For VPC, select LabVPC.
+On the Specify group details page, in the Health checks section:
+For Health check path, enter /wp-login.php
+
+Expand the  Advanced health check settings section and configure the following:
+
+For Healthy threshold, enter 2.
+For Unhealthy threshold, enter 10.
+For Timeout, enter 50.
+For Interval, enter 60.
+Leave the remaining settings on the page at their default values.
+
+Choose Next.
+
+On the Register targets page, scroll to the bottom of the page and choose Create target group.
+
+ Note: There are no targets to register currently.
+
+ Expected service output:
+
+ Successfully created target group: myWPTargetGroup
+
+
+Task 4.3: Create an Application Load Balancer
+In the left navigation pane, choose Load Balancers.
+
+Choose Create load balancer.
+
+In the Application Load Balancer section, choose Create.
+
+On the Create Application Load Balancer page, in the Basic Configuration section:
+
+For Load balancer name, enter myWPAppALB.
+In the Network mapping section:
+For VPC, choose LabVPC.
+
+For Availability Zones and subnets:
+
+Select the first Availability Zone listed, and choose PublicSubnet1 from the Subnet dropdown menu.
+Select the second Availability Zone listed, and choose PublicSubnet2 from the Subnet dropdown menu.
+In the Security groups section:
+
+From the Security groups dropdown menu, choose xxxxx-AppInstanceSecurityGroup-xxxxx.
+To remove the default security group, choose the X.
+In the Listeners and routing section:
+
+For Listener HTTP:80, choose myWPTargetGroup for the Default action.
+Scroll to the bottom of the page and choose Create load balancer.
+ Expected service output:
+
+ Successfully created load balancer:myWPAppALB
+
+
+ Note: The load balancer is in the Provisioning state for few minutes and then changes to Active. Wait for the load balancer State to change to Active.
+
+Copy the DNS name to a text editor.
+ Warning: Verify that all the resources from previous tasks are created successfully before continuing to the next task.
+
+ Task complete: You have created the target group and a public facing load balancer.
+
+
+Task 5 instructions: Creating a launch template using CloudFormation
+In this task, you use a CloudFormation template to deploy the WordPress user data within an Amazon Elastic Compute Cloud (Amazon EC2) Auto Scaling launch template. The template includes the EFS mount points and the Aurora configurations.
+
+Task 5.1: Navigate to the CloudFormation console
+At the top of the page, in the unified search bar, search for and choose CloudFormation.
+The CloudFormation page is displayed.
+
+Task 5.2: Create the CloudFormation stack
+Choose Create stack.
+ Note: If the console starts you on the Stacks page instead of the Amazon CloudFormation landing page, then you can get to the Create stack page in two steps.
+
+Choose Create stack .
+
+Choose With new resources (standard).
+
+On the Create Stack page:
+Select Choose an existing template.
+Select Amazon S3 URL.
+Copy the Task5TemplateUrl value from the left side of these lab instructions and paste it in the Amazon S3 URL text box.
+Choose Next.
+On the Specify stack details page:
+In the Provide a stack name section, for Stack name, enter WPLaunchConfigStack.
+
+In the Parameters section, for DB Name, paste the initial database name you copied in Task 2.
+
+ Note: Make sure that you paste the initial database name, not the cluster name.
+
+For Database endpoint, paste the writer endpoint you copied in Task 2.
+For Database User Name, paste the Master username you copied in Task 2.
+For Database Password, paste the LabPassword value from the left side of these lab instructions.
+For WordPress admin username, defaults to wpadmin.
+For WordPress admin password, paste the LabPassword value from the left side of these lab instructions.
+For WordPress admin email address, input a valid email address.
+For Instance Type, leave the default value of t3.medium.
+For ALBDnsName, paste the DNS name value you copied in Task 4.
+For LatestAL2023AmiId, leave the default value.
+For WPElasticFileSystemID, paste the File system ID value you copied in Task 3.
+Choose Next.
+
+On the Configure stack options page, choose Next.
+
+ Note: You can use this page to specify additional parameters. You can browse the page, but leave settings at their default values.
+
+On the Review and create page, scroll to the bottom of the page and choose Submit.
+ Note: The Review page is a summary of all settings.
+
+The stack details page is displayed.
+
+ While the stack is being created, it’s listed on the Stacks page with a status of CREATE_IN_PROGRESS.
+
+Choose the Stack info tab.
+
+Occasionally choose the console refresh .
+
+Wait for the stack status to change to  CREATE_COMPLETE.
+
+ Note: This stack can take up to 5 minutes to deploy the resources.
+
+Task 5.3: View created resources from the console
+Choose the Resources tab.
+The list shows the resources that are created.
+
+ Task complete: You have created the Launch template which is used to launch WordPress servers.
+
+
+Task 6 instructions: Create the application servers by configuring an Auto Scaling group and a scaling policy
+In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy.
+
+Task 6.1: Creating an Auto Scaling group
+At the top of the page, in the unified search bar, search for and choose EC2.
+The EC2 Dashboard page is displayed.
+
+In the left navigation pane, under the Auto Scaling section, choose Auto Scaling Groups.
+
+Choose Create Auto Scaling group.
+
+On the Choose launch template or configuration page:
+
+In the Name section, for Auto Scaling group name, enter WP-ASG.
+
+In the Launch template section, for Launch Template, select LabLaunchTemplate.
+
+Choose Next.
+
+On the Choose instance launch options page, in the Network section:
+
+For VPC, select LabVPC.
+For Availability Zones and subnets, choose AppSubnet1 and AppSubnet2.
+Choose Next.
+
+On the Configure advanced options page, configure the following:
+
+For Load balancing, select Attach to an existing load balancer.
+For Attach to an existing load balancer, select Choose from your load balancer target groups.
+For Existing load balancer target groups, select myWPTargetGroup | HTTP.
+For Health checks, select Turn on Elastic Load Balancing health checks.
+For Health check grace period, leave at the default value of 300 or more.
+Choose Next.
+
+On the Configure group size and scaling - optional page:
+
+In the Group Size section, for Desired capacity, enter 2.
+
+In the Scaling section:
+
+For Minimum capacity, enter 2
+For Maximum capacity, enter 4
+In the Automatic scaling - optional section, select the Target tracking scaling policy option.
+
+In the Additional settings section, under Monitoring, select Enable group metrics collection within CloudWatch.
+
+Choose Next.
+
+In the Add notifications page, choose Next.
+
+In the Add tags page, choose Add tag and in the Tags (1) section:
+
+For Key, enter Name.
+For Value - optional, enter wp-ha-app.
+Choose Next.
+
+On the Review page, review the Auto Scaling group configuration for accuracy, and then at the bottom of the page, choose Create Auto Scaling group.
+
+ Expected service output:
+
+ WP-ASG, 1 Scaling policy created successfully. Group metrics collection is enabled.
+
+
+Now that you have created your Auto Scaling group, you can verify that the group has launched your EC2 instances.
+
+Choose the Auto Scaling group WP-ASG link.
+
+To review information about the Auto Scaling group, examine the Details section.
+
+Choose the Activity tab.
+
+The Activity History section maintains a record of events that have occurred in your Auto Scaling group. The Status column contains the current status of your instances. When your instances are launching, the status column shows PreInService. The status changes to Successful once an instance is launched.
+
+Choose the Instance management tab.
+Your Auto Scaling group has launched two Amazon EC2 instances and they are in the InService lifecycle state. The Health Status column shows the result of the Amazon EC2 instance health check on your instances.
+
+If your instances have not reached the InService state yet, you need to wait a few minutes. You can choose the refresh button to retrieve the current lifecycle state of your instances.
+
+Choose the Monitoring tab. Here, you can review monitoring-related information for your Auto Scaling group.
+This page provides information about activity in your Auto scaling group, as well as the usage and health status of your instances. The Auto Scaling tab displays Amazon CloudWatch metrics about your Auto Scaling group, while the EC2 tab displays metrics for the Amazon EC2 instances managed by the Auto Scaling group.
+
+Task 6.2: Verify the target groups are healthy
+In the left navigation pane, choose Target Groups.
+
+Choose the myWPTargetGroup link.
+
+In the Targets tab, wait until the instance Health status is displayed as healthy.
+
+ Note: It can take up to 5 minutes for the health checks to show as healthy.
+
+Task 6.3: Login to the application
+In the left navigation pane, choose Load Balancers.
+
+Copy the DNS name to a text editor and append the value /wp-login.php to the end of the DNS name to complete your WordPress application URL.
+
+ Expected output:
+
+myWPAppELB-4e009e86b4f704cc.elb.us-west-2.amazonaws.com/wp-login.php
+
+Paste the WordPress application URL value into a new browser tab.
+The WordPress login page is displayed.
+
+On the WordPress login page:
+For Username or Email Address, enter wpadmin.
+For Password, paste the LabPassword value from the left side of these lab instructions.
+Choose the Log in button.
+The WordPress management website is displayed.
+
+WordPress-Login-Page.
+
+Image description: Preceding image depicts the final state when user navigates to the /wp-login.php page.
+
+ Task complete: You have now created a highly-available auto-scaling deployment of WordPress application that scales in and out.
+
+Conclusion
+ Task complete: You now have successfully:
+
+Deployed a virtual network spread across multiple Availability Zones in a Region using a CloudFormation template.
+Deployed a highly available and fully managed relational database across those Availability Zones using Amazon RDS.
+Used Amazon EFS to provision a shared storage layer across multiple Availability Zones for the application tier, powered by NFS.
+Created a group of web servers that automatically scales in response to load variations to complete your application tier.
+End lab
+Follow these steps to close the console and end your lab.
+
+Return to the AWS Management Console.
+
+At the upper-right corner of the page, choose AWSLabsUser, and then choose Sign out.
+
+Choose End Lab and then confirm that you want to end your lab.
