@@ -1,0 +1,104 @@
+goXdrdc9ji5wfDOiU174JGuDEaKNq4usNvvyvNW3
+
+Lab Content
+Lab overview
+Start lab
+Task 1: Review the user data file
+Task 2: Update the AWS CLI command to Create an Amazon EC2 instance
+Task 3: Verify the user data ran successfully
+Conclusion
+End lab
+Additional information
+
+Lab Content
+Lab overview
+Task 1: Review an incomplete CloudFormation template that creates an Amazon EC2 instance
+Task 2: Update the incomplete CloudFormation template
+Task 3: Create a CloudFormation stack and verify the user data processed successfully
+Conclusion
+End lab
+Additional resources
+
+M-3/5
+Lab Content
+Lab overview
+Start lab
+Task 1: Review the existing infrastructure
+Task 2: Test the link for the DNS name of the Application Load Balancer and update the User Data by using Run Command
+Challenge: Update one instance to use Apache HTTP Server
+Conclusion
+End lab
+
+M-2/6
+Lab Content
+Lab overview
+Task 2: Build and deploy the application
+Task 3: Test the application
+Task 4: Update the application and test the changes
+Conclusion
+End lab
+Additional resources
+
+URL:  https://6xdc382fx1.execute-api.us-east-1.amazonaws.com/labfunction
+
+M-3/6
+Lab Content
+Lab overview
+Start lab
+Task 1: Review the Python script and the LanguagesTable
+Challenge 1: Update the Python script to insert an item to the DynamoDB table
+Challenge 2: Modify the Python script to read an item from the DynamoDB table
+Task 2: Test the Python script
+Knowledge check
+Conclusion
+End lab
+Additional resources
+
+M-1/7
+Lab overview
+Start lab
+Task 1: Testing the web server reachability from the internet
+Task 2: Troubleshooting and remediating website reachability issues
+Task 3: Ensuring the solution is highly available
+Conclusion
+End lab
+Additional resources
+
+
+CAPSTONE
+
+Lab Content
+Lab overview
+Start lab
+Section 1: High-level instructions
+Task 1: Review and run a pre-configured CloudFormation template
+Task 2: Create an Amazon RDS database
+Task 3: Create an Amazon EFS file system
+Task 4: Create an Application Load Balancer
+Task 5: Create a launch template using CloudFormation
+Task 6: Create the application servers by configuring an Auto Scaling group and a scaling policy
+Section 2: Detailed instructions
+Task 1 instructions: Review the Network resources
+Task 2 instructions: Create an Amazon RDS database
+Task 3 instructions: Creating an Amazon EFS file system
+Task 4 instructions: Create an Application Load Balancer
+Task 5 instructions: Creating a launch template using CloudFormation
+Task 6 instructions: Create the application servers by configuring an Auto Scaling group and a scaling policy
+Conclusion
+End lab
+
+
+mydbcluster.cluster-czwqqdf4shkj.us-east-1.rds.amazonaws.com
+
+Master user name : admin
+Master Password: oXhR5NA5CSzD+8-5Z6_4
+DB Name : WPDatabase
+
+File System ID: fs-0e5297e8c61605e95
+
+DNS Name : myWPAppALB-790241652.us-east-1.elb.amazonaws.com
+
+Task5TemplateUrl : https://us-east-1-tcprod.s3.amazonaws.com/courses/SPL-CX-200-ARCHIT/v7.0.0.prod-0e4f8659/scripts/task5/task5.yaml
+
+DNS Name : myWPAppALB-790241652.us-east-1.elb.amazonaws.com/wp-login.php
+Value : /wp-login.php
